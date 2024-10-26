@@ -21,7 +21,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-connection = sqlite3.connect("portfolios.db", check_same_thread=False)
+connection = sqlite3.connect("database.db", check_same_thread=False)
 connection.row_factory = sqlite3.Row  # To access columns by name
 db = connection.cursor()
 
@@ -93,18 +93,6 @@ def buy():
     else:
         return render_template("buy.html")
 
-
-@app.route("/history")
-@login_required
-def history():
-    """Show history of transactions"""
-    transactions = db.execute("SELECT * FROM transactions WHERE user_id = ?", session["user_id"])
-    for transaction in transactions:
-        transaction["value"] = transaction["price"] * transaction["shares"]
-        transaction["price"] = float(transaction["price"])
-    return render_template("history.html", transactions=transactions)
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
@@ -153,21 +141,6 @@ def logout():
 
     # Redirect user to login form
     return redirect("/")
-
-
-@app.route("/quote", methods=["GET", "POST"])
-@login_required
-def quote():
-    if request.method == "POST":
-        symbol = request.form.get("symbol")
-        data = lookup(symbol)
-        if not data:
-            return apology("Invalid symbol")
-        else:
-            return render_template("quote.html", name=data["name"], symbol=symbol, price=usd(data["price"]))
-    else:
-        return render_template("search.html")
-
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
