@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+    <h2>To withdraw, enter a negative number</h2>
+    <p>Current balance: {{ balance }}</p>
+    <form action="/deposit" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" class="form-control mx-auto w-auto" name="deposit" placeholder="$" type="number">
+        </div>
+        <button class="btn btn-primary" type="submit">Deposit</button>
+    </form>
+
+
+
+{% endblock %}
