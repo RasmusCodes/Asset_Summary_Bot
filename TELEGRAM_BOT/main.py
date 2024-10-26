@@ -33,8 +33,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else: 
         await update.message.reply_text(f"You said: {text}")
 
+async def update_portfolio():
+    pass #TODO
+
 async def stock(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! What have you invested in?")
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, update_portfolio))
 
 if __name__ == '__main__':
     application = Application.builder().token(API_KEY).build()
